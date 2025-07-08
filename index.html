@@ -1,149 +1,563 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Меню ресторана</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Roboto&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --primary-color: #2e1f12;
-      --accent-color: #d88c51;
-      --bg-color: #fffaf4;
-      --font-header: 'Playfair Display', serif;
-      --font-body: 'Roboto', sans-serif;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Меню ресторана</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
 
-    body {
-      font-family: var(--font-body);
-      background-color: var(--bg-color);
-      color: var(--primary-color);
-      padding: 20px;
-      line-height: 1.6;
-    }
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
+            background: white;
+            min-height: 100vh;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
 
-    header {
-      text-align: center;
-      margin-bottom: 40px;
-    }
+        .header {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
 
-    header h1 {
-      font-family: var(--font-header);
-      font-size: 28px;
-      color: var(--primary-color);
-      letter-spacing: 1px;
-    }
+        .header h1 {
+            font-size: 24px;
+            margin-bottom: 5px;
+            font-weight: 300;
+        }
 
-    section {
-      margin-bottom: 35px;
-    }
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
 
-    h2 {
-      font-family: var(--font-header);
-      font-size: 22px;
-      color: var(--accent-color);
-      margin-bottom: 15px;
-      border-bottom: 2px dashed #e0c9b3;
-      padding-bottom: 5px;
-    }
+        .nav {
+            background: #f8f9fa;
+            padding: 15px;
+            border-bottom: 1px solid #e9ecef;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
 
-    .item {
-      background: #ffffff;
-      border: 1px solid #eee1d5;
-      border-radius: 10px;
-      padding: 12px 16px;
-      margin-bottom: 15px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.04);
-    }
+        .nav-item {
+            display: inline-block;
+            margin-right: 15px;
+            padding: 8px 16px;
+            background: white;
+            border-radius: 20px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid #dee2e6;
+        }
 
-    .item-title {
-      font-weight: bold;
-      font-size: 16px;
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      color: #3b2817;
-    }
+        .nav-item:hover, .nav-item.active {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(102, 126, 234, 0.3);
+        }
 
-    .item-desc {
-      font-size: 14px;
-      font-style: italic;
-      color: #555;
-      margin-top: 4px;
-    }
+        .section {
+            padding: 20px;
+            display: none;
+        }
 
-    @media (max-width: 480px) {
-      body {
-        padding: 15px;
-      }
-      .item-title {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-      .item-title span {
-        margin-top: 4px;
-        color: #7c5b3b;
-      }
-    }
-  </style>
+        .section.active {
+            display: block;
+        }
+
+        .section h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 20px;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        .menu-item {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border: 1px solid #f0f0f0;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .menu-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+        }
+
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+
+        .item-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: #2c3e50;
+            flex: 1;
+        }
+
+        .item-price {
+            font-size: 16px;
+            font-weight: 700;
+            color: #e74c3c;
+            margin-left: 10px;
+        }
+
+        .item-description {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .item-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .item-weight {
+            font-size: 12px;
+            color: #999;
+        }
+
+        .item-tags {
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            background: #f8f9fa;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            color: #666;
+        }
+
+        .tag.spicy {
+            background: #ffe6e6;
+            color: #e74c3c;
+        }
+
+        .tag.vegetarian {
+            background: #e8f5e8;
+            color: #27ae60;
+        }
+
+        .tag.popular {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 30px;
+        }
+
+        .footer h3 {
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+
+        .footer p {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-bottom: 5px;
+        }
+
+        .wifi-info {
+            background: #34495e;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+
+        .wifi-info strong {
+            color: #3498db;
+        }
+
+        /* Анимация загрузки */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .menu-item {
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        /* Адаптивность */
+        @media (max-width: 320px) {
+            .header h1 {
+                font-size: 20px;
+            }
+            
+            .nav-item {
+                font-size: 12px;
+                padding: 6px 12px;
+            }
+            
+            .menu-item {
+                padding: 15px;
+            }
+        }
+    </style>
 </head>
 <body>
-  <header>
-    <h1>Меню ресторана «Вкусный Уголок»</h1>
-  </header>
+    <div class="container">
+        <div class="header">
+            <h1>🍽️ Ресторан "Вкус"</h1>
+            <p>Авторская кухня • Свежие продукты • Уютная атмосфера</p>
+        </div>
 
-  <section>
-    <h2>🍳 Завтраки</h2>
-    <div class="item">
-      <div class="item-title">Яичница с тостами <span>190 ₽</span></div>
-      <div class="item-desc">Два яйца, хрустящие тосты и томаты черри.</div>
-    </div>
-    <div class="item">
-      <div class="item-title">Овсяная каша <span>160 ₽</span></div>
-      <div class="item-desc">С фруктами и мёдом. Веган-опция доступна.</div>
-    </div>
-    <div class="item">
-      <div class="item-title">Сырники <span>210 ₽</span></div>
-      <div class="item-desc">Подаются со сметаной и ягодным вареньем.</div>
-    </div>
-  </section>
+        <nav class="nav">
+            <div class="nav-item active" onclick="showSection('appetizers')">Закуски</div>
+            <div class="nav-item" onclick="showSection('soups')">Супы</div>
+            <div class="nav-item" onclick="showSection('mains')">Основные блюда</div>
+            <div class="nav-item" onclick="showSection('desserts')">Десерты</div>
+            <div class="nav-item" onclick="showSection('drinks')">Напитки</div>
+        </nav>
 
-  <section>
-    <h2>🍝 Основные блюда</h2>
-    <div class="item">
-      <div class="item-title">Цезарь с курицей <span>350 ₽</span></div>
-      <div class="item-desc">Классический салат с соусом цезарь, курицей и пармезаном.</div>
-    </div>
-    <div class="item">
-      <div class="item-title">Паста Карбонара <span>420 ₽</span></div>
-      <div class="item-desc">Со сливочным соусом, беконом и сыром.</div>
-    </div>
-    <div class="item">
-      <div class="item-title">Стейк из говядины <span>790 ₽</span></div>
-      <div class="item-desc">Подается с овощами-гриль и соусом демиглас.</div>
-    </div>
-  </section>
+        <div id="appetizers" class="section active">
+            <h2>🥗 Закуски</h2>
+            
+            <div class="menu-item">
+                <div class="item-header">
+                    <div class="item-name">Брускетта с томатами</div>
+                    <div class="item-price">450 ₽</div>
+                </div>
+                <div class="item-description">Хрустящий хлеб с сочными томатами, базиликом и моцареллой</div>
+                <div class="item-meta">
+                    <div class="item-weight">200 г</div>
+                    <div class="item-tags">
+                        <span class="tag vegetarian">Вегетарианское</span>
+                        <span class="tag popular">Популярное</span>
+                    </div>
+                </div>
+            </div>
 
-  <section>
-    <h2>☕ Напитки</h2>
-    <div class="item">
-      <div class="item-title">Капучино <span>150 ₽</span></div>
-      <div class="item-desc">Классический итальянский кофе с молочной пенкой.</div>
+            <div class="menu-item">
+                <div class="item-header">
+                    <div class="item-name">Тар-тар из лосося</div>
+                    <div class="item-price">890 ₽</div>
+                </div>
+                <div class="item-description">Свежий лосось с авокадо, огурцом и пикантным соусом</div>
+                <div class="item-meta">
+                    <div class="item-weight">150 г</div>
+                    <div class="item-tags">
+                        <span class="tag">Рыба</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="menu-item">
+                <div class="item-header">
+                    <div class="item-name">Сырная тарелка</div>
+                    <div class="item-price">750 ₽</div>
+                </div>
+                <div class="item-description">Ассорти из трех видов сыра с медом и орехами</div>
+                <div class="item-meta">
+                    <div class="item-weight">180 г</div>
+                    <div class="item-tags">
+                        <span class="tag vegetarian">Вегетарианское</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="soups" class="section">
+            <h2>🍲 Супы</h2>
+            
+            <div class="menu-item">
+                <div class="item-header">
+                    <div class="item-name">Том-ям с креветками</div>
+                    <div class="item-price">680 ₽</div>
+                </div>
+                <div class="item-description">Острый тайский суп с креветками, грибами и кокосовым молоком</div>
+                <div class="item-meta">
+                    <div class="item-weight">350 мл</div>
+                    <div class="item-tags">
+                        <span class="tag spicy">Острое</span>
+                        <span class="tag">Морепродукты</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="menu-item">
+                <div class="item-header">
+                    <div class="item-name">Крем-суп из тыквы</div>
+                    <div class="item-price">420 ₽</div>
+                </div>
+                <div class="item-description">Нежный суп-пюре с тыквой, сливками и имбирем</div>
+                <div class="item-meta">
+                    <div class="item-weight">300 мл</div>
+                    <div class="item-tags">
+                        <span class="tag vegetarian">Вегетарианское</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="menu-item">
+                <div class="item-header">
+                    <div class="item-name">Борщ украинский</div>
+                    <div class="item-price">380 ₽</div>
+                </div>
+                <div class="item-description">Традиционный борщ с говядиной и сметаной</div>
+                <div class="item-meta">
+                    <div class="item-weight">350 мл</div>
+                    <div class="item-tags">
+                        <span class="tag popular">Популярное</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="mains" class="section">
+            <h2>🍖 Основные блюда</h2>
+            
+            <div class="menu-item">
+                <div class="item-header">
+                    <div class="item-name">Стейк рибай</div>
+                    <div class="item-price">1890 ₽</div>
+                </div>
+                <div class="item-description">Сочный стейк из мраморной говядины с овощами гриль</div>
+                <div class="item-meta">
+                    <div class="item-weight">300 г</div>
+                    <div class="item-tags">
+                        <span class="tag popular">Популярное</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="menu-item">
+                <div class="item-header">
+                    <div class="item-name">Лосось терияки</div>
+                    <div class="item-price">1290 ₽</div>
+                </div>
+                <div class="item-description">Филе лосося в соусе терияки с рисом и овощами</div>
+                <div class="item-meta">
+                    <div class="item-weight">280 г</div>
+                    <div class="item-tags">
+                        <span class="tag">Рыба</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="menu-item">
+                <div class="item-header">
+                    <div class="item-name">Паста карбонара</div>
+                    <div class="item-price">690 ₽</div>
+                </div>
+                <div class="item-description">Классическая паста с беконом, яйцом и сыром пармезан</div>
+                <div class="item-meta">
+                    <div class="item-weight">350 г</div>
+                    <div class="item-tags">
+                        <span class="tag popular">Популярное</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="menu-item">
+                <div class="item-header">
+                    <div class="item-name">Ризотто с грибами</div>
+                    <div class="item-price">590 ₽</div>
+                </div>
+                <div class="item-description">Кремовое ризотто с лесными грибами и трюфельным маслом</div>
+                <div class="item-meta">
+                    <div class="item-weight">320 г</div>
+                    <div class="item-tags">
+                        <span class="tag vegetarian">Вегетарианское</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="desserts" class="section">
+            <h2>🍰 Десерты</h2>
+            
+            <div class="menu-item">
+                <div class="item-header">
+                    <div class="item-name">Тирамису</div>
+                    <div class="item-price">390 ₽</div>
+                </div>
+                <div class="item-description">Классический итальянский десерт с кофе и маскарпоне</div>
+                <div class="item-meta">
+                    <div class="item-weight">120 г</div>
+                    <div class="item-tags">
+                        <span class="tag popular">Популярное</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="menu-item">
+                <div class="item-header">
+                    <div class="item-name">Чизкейк нью-йорк</div>
+                    <div class="item-price">420 ₽</div>
+                </div>
+                <div class="item-description">Нежный чизкейк с ягодным соусом</div>
+                <div class="item-meta">
+                    <div class="item-weight">140 г</div>
+                    <div class="item-tags">
+                        <span class="tag">Сливочный</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="menu-item">
+                <div class="item-header">
+                    <div class="item-name">Шоколадный фондан</div>
+                    <div class="item-price">450 ₽</div>
+                </div>
+                <div class="item-description">Теплый шоколадный кекс с жидкой серединкой и мороженым</div>
+                <div class="item-meta">
+                    <div class="item-weight">150 г</div>
+                    <div class="item-tags">
+                        <span class="tag">Шоколад</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="drinks" class="section">
+            <h2>🥤 Напитки</h2>
+            
+            <div class="menu-item">
+                <div class="item-header">
+                    <div class="item-name">Эспрессо</div>
+                    <div class="item-price">150 ₽</div>
+                </div>
+                <div class="item-description">Классический крепкий кофе</div>
+                <div class="item-meta">
+                    <div class="item-weight">30 мл</div>
+                    <div class="item-tags">
+                        <span class="tag">Кофе</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="menu-item">
+                <div class="item-header">
+                    <div class="item-name">Капучино</div>
+                    <div class="item-price">220 ₽</div>
+                </div>
+                <div class="item-description">Эспрессо с молочной пенкой</div>
+                <div class="item-meta">
+                    <div class="item-weight">200 мл</div>
+                    <div class="item-tags">
+                        <span class="tag">Кофе</span>
+                        <span class="tag popular">Популярное</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="menu-item">
+                <div class="item-header">
+                    <div class="item-name">Домашний лимонад</div>
+                    <div class="item-price">280 ₽</div>
+                </div>
+                <div class="item-description">Освежающий лимонад с мятой</div>
+                <div class="item-meta">
+                    <div class="item-weight">300 мл</div>
+                    <div class="item-tags">
+                        <span class="tag">Безалкогольное</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="menu-item">
+                <div class="item-header">
+                    <div class="item-name">Красное вино</div>
+                    <div class="item-price">450 ₽</div>
+                </div>
+                <div class="item-description">Бокал сухого красного вина</div>
+                <div class="item-meta">
+                    <div class="item-weight">150 мл</div>
+                    <div class="item-tags">
+                        <span class="tag">Алкоголь</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <h3>Контакты</h3>
+            <p>📍 ул. Примерная, 123, Москва</p>
+            <p>📞 +7 (495) 123-45-67</p>
+            <p>🕒 Работаем: 11:00 - 23:00</p>
+            <p>📧 info@restaurant-vkus.ru</p>
+            
+            <div class="wifi-info">
+                <p><strong>WiFi:</strong> RestaurantVkus</p>
+                <p><strong>Пароль:</strong> vkus2024</p>
+            </div>
+        </div>
     </div>
-    <div class="item">
-      <div class="item-title">Матча латте <span>180 ₽</span></div>
-      <div class="item-desc">Зелёный чай матча с молоком.</div>
-    </div>
-    <div class="item">
-      <div class="item-title">Домашний лимонад <span>160 ₽</span></div>
-      <div class="item-desc">Свежевыжатый лимон, мята, сахар, лёд.</div>
-    </div>
-  </section>
+
+    <script>
+        function showSection(sectionId) {
+            // Скрыть все секции
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Убрать активный класс с всех навигационных элементов
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // Показать выбранную секцию
+            document.getElementById(sectionId).classList.add('active');
+            
+            // Добавить активный класс к соответствующему навигационному элементу
+            event.target.classList.add('active');
+            
+            // Плавная прокрутка к началу секции
+            document.getElementById(sectionId).scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+
+        // Добавить эффект загрузки к элементам меню
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuItems = document.querySelectorAll('.menu-item');
+            menuItems.forEach((item, index) => {
+                item.style.animationDelay = `${index * 0.1}s`;
+            });
+        });
+    </script>
 </body>
 </html>
